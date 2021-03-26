@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./sidebar.css";
 import Nav from "./Nav/Nav";
 import SidebarContent from "./SidebarContent/SidebarContent";
@@ -17,6 +17,8 @@ export default function Sidebar(props) {
     <div className="sidebar" id="sidebar">
       <Nav onTabOpen={handleTabOpen} />
       <SidebarContent
+        setShowSidebar={props.setShowSidebar}
+        setShowChat={props.setShowChat}
         parentCallback={handleCallback}
         tabContentIndex={curTabOpen}
       />

@@ -1,12 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./placeholder.css";
 import { AiOutlineGithub } from "react-icons/ai";
-import * as Ai from 'react-icons/ai';
+import * as Ai from "react-icons/ai";
 
 import UserContext from "../../../context/UserContext";
-import { useEffect } from "react";
 
-export default function Placeholder(props) {
+export default function Placeholder({setShowSidebar, setShowChat}) {
   const { userData } = useContext(UserContext);
   const [name, setName] = useState();
 
@@ -16,14 +15,14 @@ export default function Placeholder(props) {
   }, [userData]);
 
   const handleArrowClick = () => {
-    document.getElementById('placeholder').style.display = 'none'
-    document.getElementById('sidebar').style.display = 'flex'
-  }
+    setShowChat(false)
+    setShowSidebar(true)
+  };
 
   return (
     <div className="placeholder" id="placeholder">
       <div className="div-top">
-        <Ai.AiOutlineArrowLeft id="arrow-icon" onClick={handleArrowClick} style={{height: '2rem', width: '2rem', color: 'white', marginLeft: '1rem', cursor: 'pointer'}} />
+        <Ai.AiOutlineArrowLeft id="arrow-icon" onClick={handleArrowClick} />
         <h1 className="welcome">Welcome {name} !</h1>
       </div>
       <div className="dependencies-container">

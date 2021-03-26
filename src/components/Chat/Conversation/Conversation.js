@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import "./conversation.css";
-import { BiSend, BiMenu } from "react-icons/bi";
-import * as Ai from 'react-icons/ai';
+import { BiSend } from "react-icons/bi";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 import UserContext from "../../../context/UserContext";
 import ConversationsContext from "../../../context/ConversationsContext";
@@ -119,16 +119,24 @@ export default function Conversation(props) {
   }, [socket, openConversation]);
 
   const handleArrowClick = () => {
-    document.getElementById('conversation-container').style.display = 'none'
-    document.getElementById('sidebar').style.display = 'block'
-  }
+    props.setShowSidebar(true)
+    props.setShowChat(false)
+  };
 
   return (
-    <div className="conversation-container" id="conversation-container">
+    <div
+      style={
+        window.innerWidth > 1000 && openConversation
+          ? { display: "flex" }
+          : null
+      }
+      className="conversation-container"
+      id="conversation-container"
+    >
       {openConversation && (
         <>
           <nav className="conversation-nav">
-            <Ai.AiOutlineArrowLeft id="arrow-icon" onClick={handleArrowClick} style={{ height: '2rem', width: '2rem', color: 'white', marginLeft: '1rem', cursor: 'pointer' }} />
+            <AiOutlineArrowLeft id="arrow-icon" onClick={handleArrowClick} />
             <h3 className="conversation-name">{openConversation._id}</h3>
           </nav>
           <div className="messages-container">
@@ -152,8 +160,8 @@ export default function Conversation(props) {
                         {msg.sender === userData.user.username
                           ? "You"
                           : isContact
-                            ? isContact.name
-                            : msg.sender}
+                          ? isContact.name
+                          : msg.sender}
                       </div>
                       <div className="text">{msg.message}</div>
                       <div className="time">{msg.time}</div>

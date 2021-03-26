@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./sidebarContent.css";
 
 import ConversationsContext from "../../../../context/ConversationsContext";
 import OpenConversationIDContext from "../../../../context/OpenConversationIDContext";
 import ContactsContext from "../../../../context/ContactsContext";
+import WidthContext from "../../../../context/WidthContext";
 
 export default function SidebarContent(props) {
   const { contacts } = useContext(ContactsContext);
@@ -11,19 +12,16 @@ export default function SidebarContent(props) {
   const { openConversationID, setOpenConversationID } = useContext(
     OpenConversationIDContext
   );
+  const { width } = useContext(WidthContext)
 
   // Select Conversation
   const handleConversationClick = (e) => {
     setConversations((prev) => prev);
-    props.parentCallback({
-      sidebarDisplay: "none",
-      conversationDisplay: "flex",
-    });
+    props.parentCallback(e.target.id);
     setOpenConversationID(e.target.id);
-    if (window.innerWidth < 1001) {
-      document.getElementById('sidebar').style.display = "none"
-      document.getElementById('conversation-container') && (document.getElementById('conversation-container').style.display = 'flex')
-      document.getElementById('arrow-icon').style.display = 'block'
+    if (width < 1000) {
+      props.setShowChat(true)
+      props.setShowSidebar(false)
     }
   };
 

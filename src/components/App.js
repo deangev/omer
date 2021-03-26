@@ -6,6 +6,7 @@ import Login from "./Auth/Login";
 import Chat from "./Chat/Chat";
 import Loading from "../Loading/Loading";
 import UserContext from "../context/UserContext";
+import WidthContext from "../context/WidthContext";
 
 export default function App() {
   const [userData, setUserData] = useState({
@@ -13,6 +14,9 @@ export default function App() {
     user: undefined,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [width, setWidth] = useState(window.innerWidth);
+
+  window.addEventListener("resize", () => setWidth(window.innerWidth));
 
   // Check if Logged in
   useEffect(() => {
@@ -52,7 +56,9 @@ export default function App() {
           <BrowserRouter>
             <UserContext.Provider value={{ userData, setUserData }}>
               <Switch>
-                <Route exact path="/" component={Chat} />
+                <WidthContext.Provider value={{ width }}>
+                  <Route exact path="/" component={Chat} />
+                </WidthContext.Provider>
                 {!userData.user ? (
                   <>
                     <Route path="/login" component={Login} />

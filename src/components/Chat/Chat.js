@@ -8,7 +8,9 @@ import UserContext from "../../context/UserContext";
 import ContactsContext from "../../context/ContactsContext";
 import ConversationsContext from "../../context/ConversationsContext";
 import OpenConversationIDContext from "../../context/OpenConversationIDContext";
+
 import Axios from "axios";
+import WidthContext from "../../context/WidthContext";
 
 export default function Chat(props) {
   const { userData } = useContext(UserContext);
@@ -17,6 +19,20 @@ export default function Chat(props) {
   const [openConversationID, setOpenConversationID] = useState();
   const history = useHistory();
   const [sync, setSync] = useState(props.synced);
+
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [showChat, setShowChat] = useState(true)
+  const { width } = useContext(WidthContext);
+
+  useEffect(() => {
+    if (width > 1000) {
+      setShowSidebar(true);
+      setShowChat(true);
+    } else {
+      setShowSidebar(true)
+      setShowSidebar(false)
+    }
+  }, [width]);
 
   useEffect(() => {
     if (!userData.user) {
@@ -71,8 +87,8 @@ export default function Chat(props) {
           value={{ openConversationID, setOpenConversationID }}
         >
           <div className="chat-container">
-            <Sidebar parentCallback={handleSync} />
-            {openConversationID ? <Conversation /> : <Placeholder />}
+            {width < 1000 ? (showSidebar && <Sidebar setShowChat={setShowChat} setShowSidebar={setShowSidebar} parentCallback={handleSync} />) : <Sidebar parentCallback={handleSync} />}
+            {(openConversationID && showChat) ? <Conversation setShowChat={setShowChat} setShowSidebar={setShowSidebar} /> : (showChat && <Placeholder setShowChat={setShowChat} setShowSidebar={setShowSidebar} />)}
           </div>
         </OpenConversationIDContext.Provider>
       </ConversationsContext.Provider>
